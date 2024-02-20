@@ -1,0 +1,59 @@
+<apex:page id="Registration" showHeader="false" standardController="Contact" extensions="registrationController">
+        <center>
+                <br/>
+                <br/>
+                <br/>
+                    <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="2"> 
+                        <apex:panelGroup >
+                        <br/>
+                            <apex:form id="theForm">
+                            <apex:pageMessages id="error"/>
+
+                                <apex:pageBlock title="Fill out the registration form" id="form">
+
+                                    <table style="width:100%">
+                                        <tr>
+                                                <td><apex:outputLabel value="Enter Mobile: "/></td>
+                                                <td><apex:inputText value="{!mobile}"/><br/></td>
+                                        </tr>
+                                        <tr>
+                                                <td><apex:outputLabel value="Enter First name: "/></td>
+                                                <td><apex:inputText value="{!firstName}"/><br/></td>
+                                        </tr>
+                                        <tr>
+                                                <td><apex:outputLabel value="Enter Last name: "/></td>
+                                                <td><apex:inputText value="{!lastName}"/><br/></td>
+                                        </tr>
+                                        <tr>
+                                                <td><apex:outputLabel value="Enter Email: "/></td>
+                                                <td><apex:inputText value="{!email}"/><br/></td>
+                                        </tr>
+                                        <tr>
+                                                <td><apex:outputLabel value="Enter City: "/></td>
+                                                <td><apex:selectList value="{!city}" size="1" >
+                                                        <apex:selectOptions value="{!Cities}"/>
+                                                </apex:selectList><br/></td>
+                                        </tr>
+                                        <tr>
+                                                <td><apex:outputLabel value="Enter Password: "/></td>
+                                                <td><apex:inputSecret value="{!password}"/><br/></td>
+                                        </tr>
+                                        <tr>
+                                                <td><apex:outputLabel value="Confirm Password: "/></td>
+                                                <td><apex:inputSecret value="{!confirmPassword}"/><br/></td>
+                                        </tr>
+                                    </table>
+
+                                <div align="right">
+                                        <apex:commandButton value="Submit" action="{!registration}"/>
+                                        <apex:commandButton value="Back To Login" action="{!backToLoginPage}"/>
+                                </div>
+                                        
+                                </apex:pageBlock>
+                            </apex:form>
+                            <br/>
+                        </apex:panelGroup>
+                    </apex:panelGrid>
+    </center>
+    <br/>
+</apex:page>

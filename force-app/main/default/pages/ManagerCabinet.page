@@ -1,0 +1,88 @@
+<apex:page id="managerCabinet" showHeader="false" lightningStylesheets="true" standardController="Contact" extensions="ManagerCabinetController">
+    <style>
+        .container_x-large {
+            max-width: 100rem;
+        }
+
+        .container_large {
+            max-width: 90rem;
+        }
+
+        .container_center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .rightbutton { 
+            position: absolute;
+            top: 10px;
+            right: 250px;
+            /* background: #ccc; */
+            padding: 10px;
+        }
+
+        body {
+                background-image: url("{!$Resource.background}");
+                background-repeat:repeat;
+            }
+            
+    </style>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+    <apex:slds />
+    <div class="slds-scope">
+    <apex:form >
+        <div class="container_x-large container_center">
+            <div class="container_large container_center">
+                <div class="rightbutton">
+                        <td><apex:commandButton value="Back To User Cabinet" action="{!followBackToUserCabinet}" styleClass="slds-button slds-button_outline-brand"/></td>
+                        <td><apex:commandButton value="Logout" action="{!followBackToLoginPage}" styleClass="slds-button slds-button_outline-brand"/></td>
+                </div>
+
+                    <apex:pageBlock title="Hello, {!FirstName}!">
+
+                                <table style="width:100%" class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols">
+                                <tr class="slds-line-height_reset">
+                                    <td><apex:outputLabel value="The current rate of Gas: "/>
+                                    <apex:outputText value="{!RateCas}  "/><br/>
+                                    <apex:outputLabel value="Change Gas rate?: "/>
+                                    <apex:inputText value="{!gas}"/>
+                                    <apex:commandButton value="Submit" action="{!updateDefoultRateGas}" styleClass="slds-button slds-button--neutral"/></td> 
+                                </tr>
+                                <tr class="slds-line-height_reset">
+                                    <td><apex:outputLabel value="The current rate of Water: "/>
+                                    <apex:outputText value="{!RateWater}"/><br/>
+                                    <apex:outputLabel value="Change Was rate?: "/>
+                                    <apex:inputText value="{!water}"/>
+                                    <apex:commandButton value="Submit" action="{!updateDefoultRateWater}" styleClass="slds-button slds-button--neutral"/></td> 
+                                </tr>
+                                <tr class="slds-line-height_reset">
+                                    <td><apex:outputLabel value="The current rate of Electricity: "/>
+                                    <apex:outputText value="{!RateElectricity}"/><br/>
+                                    <apex:outputLabel value="Change Electricity rate?: "/>
+                                    <apex:inputText value="{!electricity}"/>
+                                    <apex:commandButton value="Submit" action="{!updateDefoultRateElectricity}" styleClass="slds-button slds-button--neutral"/></td> 
+                                </tr>
+                                </table>
+                                
+
+                        <apex:pageBlockSection title="List User by region" collapsible="false" columns="1">        
+                            <apex:pageBlockTable value="{!RegionUsers}" var="r" styleClass="slds-table slds-table_bordered slds-table_cell-buffer">
+                                <apex:column headerValue="Name" value="{!r.Name}" headerClass="slds-text-title--caps"/>
+                                <apex:column headerValue="Gas Debt" value="{!r.Debt_Gas__c}" headerClass="slds-text-title--caps"/>
+                                <apex:column headerValue="Gas Meter Reading" value="{!r.Prev_Gas__c}" headerClass="slds-text-title--caps"/>
+                                <apex:column headerValue="Water Debt" value="{!r.Debt_Water__c}" headerClass="slds-text-title--caps"/>
+                                <apex:column headerValue="Water Meter Reading" value="{!r.Prev_Water__c}" headerClass="slds-text-title--caps"/>
+                                <apex:column headerValue="Electricity Debt" value="{!r.Debt_Electricity__c}" headerClass="slds-text-title--caps"/>
+                                <apex:column headerValue="Electricity Meter Reading" value="{!r.Prev_Electricity__c}" headerClass="slds-text-title--caps"/>
+                            </apex:pageBlockTable>
+                        </apex:pageBlockSection>
+
+                    </apex:pageBlock>
+            </div>
+        </div>
+    </apex:form>
+</div>
+</apex:page>

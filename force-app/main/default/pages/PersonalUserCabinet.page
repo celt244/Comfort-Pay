@@ -1,0 +1,268 @@
+<apex:page id="userCabinet" showHeader="false" lightningStylesheets="true" standardController="Contact" extensions="PersonalUserCabinetController">
+    <apex:stylesheet value="{!$Resource.StylingUserCabinet}"/>
+
+    <apex:form >
+
+    <div class="container_x-large container_center">
+        <div>
+        <div >
+
+            <br/>
+            <br/>
+
+            <div class="sd">
+                <h1>Hello, {!UserName}</h1>
+            </div>
+            <div class="userinfo">
+                    <apex:pageBlock title="Info about me" id="userInfo">
+                        <table>
+                            <tr>
+                                <td><apex:outputLabel value="User Name: "/>
+                                    <apex:outputText value="{!UserName}"/></td>
+                            </tr>
+                            <tr>
+                                    <td><apex:outputLabel value="Email: "/>
+                                    <apex:outputText value="{!UserEmail}"/></td>
+                            </tr>
+                            <tr>
+                                <td><apex:outputLabel value="Regoin: "/>
+                                    <apex:outputText value="{!UserRegion}"/></td>
+                            </tr>
+                            <tr>
+                                    <td><apex:outputLabel value="You are manager: " rendered="{!IsManager}"/>
+                                        <apex:commandButton value="Manager cabinet" action="{!followOnManagerCabinetPage}" rendered="{!IsManager}"/></td>
+                            </tr>
+                            <tr>
+                                        <td><apex:commandButton value="Logout" action="{!followBackLoginPage}"/>
+                                            
+                                            <apex:commandButton value="My raties" action="{!showPopupWithRate}" rendered="{!!IsManager}"/>
+                                                <apex:outputPanel id="popup">
+                                                    <apex:outputPanel id="popInnerOutputPnl" styleClass="customPopup" layout="block" rendered="{!displayPopUp}">
+                                                        <apex:commandButton value="X" title="Close the popup" action="{!closePopup}" styleClass="closeButton" rerender="popup"/><br/><br/>
+                                                            <table>
+                                                                <tr>
+                                                                    Standart reties
+                                                                    <td>
+                                                                        <apex:outputLabel value="Gas: "/>
+                                                                        <apex:outputText value="{!GasUserRegion}"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <apex:outputLabel value="Water: "/>
+                                                                        <apex:outputText value="{!WaterUserRegion}"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <apex:outputLabel value="Electricity: "/>
+                                                                        <apex:outputText value="{!ElectricityUserRegion}"/>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        <apex:commandButton value="Ok" action="{!closePopup}"/>
+                                                    </apex:outputPanel>
+                                                </apex:outputPanel></td>
+                                
+                                            <td><apex:panelGrid columns="3" rendered="{!!IsManager}" style="margin-top:1em;">
+                                                    <apex:commandButton value="Change City" action="{!ChangeCity}"/>
+                                                        <apex:selectList value="{!newCity}" size="1" rendered="{!IsDebtor}" >
+                                                            <apex:selectOptions value="{!Cities}"/>
+                                                        </apex:selectList>
+                                                    <apex:outputText value="Balance less than 0" rendered="{!!IsDebtor}"/>
+                                            </apex:panelGrid></td>
+                            </tr>
+                        </table>
+                    </apex:pageBlock>
+            </div>
+        </div>
+        <hr/>
+            <div class="utilityset">	
+                <div class="utilityinfo" align="left">
+                        <apex:pageBlock title="GAS">
+                            <table>
+                                <tr>
+                                    <td><apex:outputLabel value="Debt: "/>
+                                        <apex:outputText value="{!DebtGas}"/></td>
+                                </tr>
+                                <tr>
+                                    <td><apex:outputLabel value="Total Count: "/></td>
+                                    <td><apex:outputText value="{!PrevGas}   "/></td>
+                                </tr>
+                                <tr>
+                                    <td><apex:outputLabel value="In this month: "/></td>
+                                    <td><apex:inputText value="{!currentValueGas}"/>
+                                        <apex:commandButton value="Calculate" action="{!CalculateGas}"/></td>
+                                </tr>
+                                <tr>
+                                        <td><apex:outputLabel value="Amount: " /></td>
+                                        <td><apex:inputText value="{!amountGas}"/>   
+                                            <apex:commandButton value="    Pay    " action="{!PayOnlyGas}"/></td>
+                                </tr>
+                        </table>
+                        </apex:pageBlock>
+                </div>
+                <div class="utilityinfo" align="left">
+                        <apex:pageBlock title="WATER">
+                            <table>
+                                <tr>
+                                    <td><apex:outputLabel value="Debt: "/>
+                                        <apex:outputText value="{!DebtWater}"/></td>
+                                </tr>
+                                <tr>
+                                    <td><apex:outputLabel value="Total Count: "/></td>
+                                    <td><apex:outputText value="{!PrevWater}"/></td>
+                                </tr>
+                                <tr>
+                                        <td><apex:outputLabel value="In this month: "/></td>
+                                        <td><apex:inputText value="{!currentValueWater}"/>
+                                            <apex:commandButton value="Calculate" action="{!CalculateWater}"/></td>
+                                </tr>
+                                <tr>
+                                        <td><apex:outputLabel value="Amount: "/></td>
+                                        <td><apex:inputText value="{!amountWater}"/>   
+                                            <apex:commandButton value="    Pay    " action="{!PayOnlyWater}"/></td>
+                                </tr>
+                            </table>
+                        </apex:pageBlock>
+                </div>
+                <div class="utilityinfo" align="left">
+                    <apex:pageBlock title="ELECTRICITY" id="paymentPanels">
+                        <table>
+                            <tr>
+                                <td><apex:outputLabel value="Debt: "/>
+                                    <apex:outputText value="{!DebtElectricity}"/></td>
+                            </tr>
+                            <tr>
+                                <td><apex:outputLabel value="Total Count: "/></td>
+                                <td><apex:outputText value="{!PrevElectricity}"/></td>
+                            </tr>
+                            <tr>
+                                <td><apex:outputLabel value="In this month: "/></td>
+                                <td><apex:inputText value="{!currentValueElectricity}"/>
+                                    <apex:commandButton value="Calculate" action="{!CalculateElectricity}"/></td>
+                            </tr>
+                            <tr>
+                                    <td><apex:outputLabel value="Amount: " /></td>
+                                    <td><apex:inputText value="{!amountElectricity}"/>
+                                        <apex:commandButton value="    Pay    " action="{!PayOnlyElectricity}"/>
+                                        <!-- <apex:actionStatus id="payStatus">
+                                            <apex:facet name="start">
+                                                <apex:commandButton value="    Pay    " action="{!PayOnlyElectricity}" disabled="true"/>
+                                            </apex:facet>
+                                            <apex:facet name="stop">
+                                                <apex:commandButton value="    Pay    " action="{!PayOnlyElectricity}" reRender="electricity" status="payStatus"/>
+                                            </apex:facet>
+                                        </apex:actionStatus> -->
+                                    </td>
+                            </tr>
+                        </table>
+                    </apex:pageBlock>
+                </div>
+            </div >
+            <hr/>
+            <div class="container_center">
+                <div class = "allpaybatton">
+                    <apex:outputLabel value="Total Amount: "/>
+                    <apex:outputText value="{!TotalDebt}"/><br/>
+                    <apex:commandButton value="   Pay   " action="{!PayAllUtilities}"/>
+                    <!-- <apex:actionStatus id="payStatus" startText="Payment in progress...">
+                        <apex:facet name="stop">
+                            <apex:commandButton value="   Pay   " action="{!PayAllUtilities}" status="payStatus" reRender="paymentPanels"/>
+                        </apex:facet>
+                    </apex:actionStatus> -->
+                </div>
+            </div>
+
+            <br/>
+            <br/>
+            <br/>
+            <hr/>
+
+            <div class="utilityset">
+                <div class = "tabsloc" id="tableBlock">
+                        <apex:pageBlock title="Info about utility paymants" id="pg1">
+                                <apex:tabPanel switchType="client" selectedTab="name1" id="AccountTabPanel" tabClass="activeTab" inactiveTabClass="inactiveTab">
+                                    <apex:tab label="All payments" name="name1" id="tabOne">
+                                            <apex:pageBlockTable value="{!utilityPayments}" var="p">
+                                                <apex:column headerValue="Number Payment">
+                                                    <apex:outputLink value="/apex/PDFbill?id={!p.Id}" target="_blank">{!p.Name}</apex:outputLink>
+                                                </apex:column>
+                                                <apex:column headerValue="Date of Pay" value="{!p.Date_of_payment__c}"/>
+                                                <apex:column headerValue="Total Debt" value="{!p.Amount__c}"/>
+                                                <apex:column headerValue="Pay by GAS" value="{!p.amount_for_gas__c}"/>
+                                                <apex:column headerValue="GAS Meter Reading" value="{!p.used_gas__c}"/>
+                                                <apex:column headerValue="Pay by WATER" value="{!p.amount_for_water__c}"/>
+                                                <apex:column headerValue="WATER Meter Reading" value="{!p.used_water__c}"/>
+                                                <apex:column headerValue="Pay by ELECTRICITY" value="{!p.Amount_for_electricity__c}"/>
+                                                <apex:column headerValue="ELECTRICITY Meter Reading" value="{!p.used_electricity__c}"/>
+                                                <apex:column headerValue="Region" value="{!p.Region__c}"/>
+                                            </apex:pageBlockTable>
+                                    </apex:tab>
+                                    <apex:tab label="GAS" name="name2" id="tabTwo">
+                                            <apex:pageBlockTable value="{!utilityPaymentsGAS}" var="p">
+                                                    <apex:column headerValue="Number Payment" value="{!p.Name}"/>
+                                                    <apex:column headerValue="Date of Pay" value="{!p.Date_of_payment__c}"/>
+                                                    <apex:column headerValue="Pay by GAS" value="{!p.amount_for_gas__c}"/>
+                                                    <apex:column headerValue="Total Count GAS" value="{!p.used_gas__c}"/>
+                                                    <apex:column headerValue="Region" value="{!p.Region__c}"/>
+                                            </apex:pageBlockTable>
+                                    </apex:tab>
+                                    <apex:tab label="WATER" name="name3" id="tabThree">
+                                            <apex:pageBlockTable value="{!utilityPaymentsWATER}" var="p">
+                                                    <apex:column headerValue="Number Payment" value="{!p.Name}"/>
+                                                    <apex:column headerValue="Date of Pay" value="{!p.Date_of_payment__c}"/>
+                                                    <apex:column headerValue="Pay by WATER" value="{!p.amount_for_water__c}"/>
+                                                    <apex:column headerValue="Total Count WATER" value="{!p.used_water__c}"/>
+                                                    <apex:column headerValue="Region" value="{!p.Region__c}"/>
+                                            </apex:pageBlockTable>
+                                    </apex:tab>
+                                    <apex:tab label="ELECTRICITY" name="name4" id="tabFour">
+                                            <apex:pageBlockTable value="{!utilityPaymentsELECTRICITY}" var="p">
+                                                    <apex:column headerValue="Number Payment">
+                                                        <apex:commandLink target="_blank" value="{!p.Name}"/>
+                                                    </apex:column> 
+                                                    <apex:column headerValue="Date of Pay" value="{!p.Date_of_payment__c}"/>
+                                                    <apex:column headerValue="Pay by ELECTRICITY" value="{!p.Amount_for_electricity__c}"/>
+                                                    <apex:column headerValue="Total Count ELECTRICITY" value="{!p.used_electricity__c}"/>
+                                                    <apex:column headerValue="Region" value="{!p.Region__c}"/>
+                                            </apex:pageBlockTable>
+                                    </apex:tab>
+                                </apex:tabPanel>
+
+                                <!-- Pagination -->
+
+                                    <apex:outputLabel >Total no of recs:{!tot}</apex:outputLabel>
+
+                                    <div align="center">
+                                        <apex:commandButton value="First Page" action="{!Firstbtn}" disabled="{!prv}" reRender="pg1"/>
+                                        <apex:commandButton value="PreviousPage" action="{!prvbtn}" disabled="{!prv}" reRender="pg1"/>
+                                        <apex:commandButton value="NextPage" action="{!Nxtbtn}" disabled="{!nxt}"  reRender="pg1"/>
+                                        <apex:commandButton value="LastPage" action="{!lstbtn}" disabled="{!nxt}" reRender="pg1"/>
+                                    </div>
+                                        Display records per page <apex:selectList value="{!rec}" size="1" >
+                                        <apex:selectOption itemLabel="5" itemValue="5"></apex:selectOption>
+                                        <apex:selectOption itemLabel="10" itemValue="10"></apex:selectOption>
+                                        <apex:selectOption itemLabel="20" itemValue="20"></apex:selectOption>
+                                        <apex:actionSupport event="onchange" reRender="pg1" action="{!updatePage}"/>
+                                        </apex:selectList><br/>
+                        </apex:pageBlock>
+                </div>
+                <div id="emailManeger" class="emailformloc">
+                    <apex:pageBlock title="Email to Manager"  rendered="{!!IsManager}">
+                        <table>
+                            <tr>
+                                <td><apex:inputTextarea value="{!emailToManager}"/></td>
+                            </tr>
+                            <tr>
+                                <td align="right"><apex:commandButton value="Send" action="{!sendEmailToManager}"/></td>
+                            </tr>
+                        </table>
+                    </apex:pageBlock>
+                </div>
+            </div>
+        </div>
+    </div>
+</apex:form> 
+
+</apex:page>

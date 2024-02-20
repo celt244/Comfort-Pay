@@ -1,0 +1,58 @@
+<apex:page renderAs="pdf" standardController="Utility_Payment__c">
+
+	<apex:stylesheet value="{!$Resource.pdfStyle}"/>
+
+	<div align="right"><strong>Date</strong>: {!DAY(Today())} {!CASE(MONTH(Today()), 1, 'January', 2, 'February', 3, 'March', 4, 'April', 5, 'May', 6, 'June', 7, 'July', 8, 'August', 9, 'September', 10, 'October', 11, 'November', 12, 'December', 'Unknown')} {!YEAR(Today())}</div>
+	<div align="right"><strong>Payer</strong>: {!Utility_Payment__c.User_name__c}</div>
+
+	<center>
+		<h1>Utility Bill</h1>
+	</center>
+
+	<p>This receipt confirms the success of the payment of your utilities.</p>
+	<p>Thank you for using our service.</p>
+
+	<table align="center" style="border: 1px solid #6699CC;">
+		<tr>
+			<td style="background-color: #6699CC; color: #FFFFFF; font-size: 200%; padding: 10px;">Payment Information</td>
+			<td>
+
+				<!-- First way -->
+
+				<!-- <ul>
+					<li>Payer: 					{!Utility_Payment__c.User_name__c}</li>
+					<li>Your Region: 			{!Utility_Payment__c.Region__c}</li>
+					<li>Number of payment: 		{!Utility_Payment__c.Name}</li>
+					<li>Used GAS: 				{!Utility_Payment__c.used_gas__c}</li>
+					<li>Amount for GAS: 		{!Utility_Payment__c.amount_for_gas__c}</li>
+					<li>Used WATER: 			{!Utility_Payment__c.used_water__c}</li>
+					<li>Amount for WATER: 		{!Utility_Payment__c.amount_for_water__c}</li>
+					<li>Used ELECTRICITY: 		{!Utility_Payment__c.used_electricity__c}</li>
+					<li>Amount for ELECTRICITY: {!Utility_Payment__c.Amount_for_electricity__c}</li>
+					<li>Total Debt: 			{!Utility_Payment__c.Amount__c}</li>
+					<li>Date of payment:    	{!Utility_Payment__c.Date_of_payment__c}</li>
+				</ul> -->
+
+				<!-- Second way with FieldSets -->
+
+				<apex:pageBlock title="Info">
+					<apex:pageBlockSection columns="1">
+						<apex:repeat value="{!$ObjectType.Utility_Payment__c.FieldSets.Utility_Set}" var="field">
+							<apex:outputField value="{!Utility_Payment__c[field]}"/>
+						</apex:repeat>
+					</apex:pageBlockSection>
+				</apex:pageBlock>
+				
+			</td>
+		</tr>
+	</table>
+	<div style="color: #999999; font-size: 90%; margin-top: 15px;">
+
+		<br/>
+		<hr/>
+		
+		<div>Our Servise: https://comfortpay-developer-edition.eu25.force.com/login</div>
+		<div>Email your manager: {!Utility_Payment__c.Contact__r.Region__r.Manager__r.Email}</div>
+		
+	</div>
+</apex:page>

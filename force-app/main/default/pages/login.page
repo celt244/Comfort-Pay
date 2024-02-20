@@ -1,0 +1,35 @@
+<apex:page id="loginPage" showHeader="false" lightningStylesheets="true" standardController="Contact" extensions="loginController">
+<apex:slds />
+
+    	<style>
+                .center {
+                width: 55%;
+                 margin-left: auto;
+                 margin-right: auto;
+                }
+        </style>  
+
+	<div class="slds-scope">
+    		<div class="slds-align_absolute-center" style="height:5rem">
+                <div class="center">
+                    
+                        <apex:panelGrid bgcolor="white" columns="1" > 
+                                <br/><br/>
+                                <apex:form >
+                                        <apex:pageMessages id="error"/>
+                                        
+                                        <apex:outputLabel value="Enter Mobile: "/>
+                                        <apex:inputText value="{!mobile}"/>
+
+                                        <apex:outputLabel value="Enter Password: "/>
+                                        <apex:inputSecret value="{!password}" styleClass="slds-m-right_small"/>
+
+                                        <apex:commandButton value="Login" action="{!login}" styleClass="slds-button slds-button_outline-brand"/>
+                                        <apex:commandButton value="Registration" action="{!redirectToRegistrationPage}" styleClass="slds-button slds-button_success"/><br/>
+                                        <apex:commandLink value="Forgot Your Password?" action="{!redirectToForgotPasswordPage}"/>
+                                </apex:form>
+                        </apex:panelGrid>
+                </div>
+       	        </div>
+        </div>
+</apex:page>
